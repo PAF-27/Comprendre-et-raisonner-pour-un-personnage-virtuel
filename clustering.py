@@ -7,51 +7,10 @@ Created on Fri Jun 16 11:34:06 2017
 
 import numpy as np 
 from sklearn.cluster import KMeans
-fresultat=open('C:\\Users\\cleme\\Desktop\\resultat.txt','w',encoding='UTF8')
-fframes= open('C:\\Users\\cleme\\Desktop\\liste_des_frames.txt','r',encoding='UTF8')
-fdata=open('C:\\Users\\cleme\\numberbatch-en-17.04b.txt','r',encoding='UTF8')
-compteurFrames=0
-compteurMots=0
-fdata.readline()
-words=[]
-tartiflette=[]
-for line in fdata:
-    t=line.split()
-    compteurMots=compteurMots+1
-    mot=t[0]
-    frame=fframes.readline()
-    frame=str(frame)
-    frame=frame.lower()
-    tartiflette=frame.split()
-    frame=tartiflette[0]
-    while (frame!="worry"):
-        if frame==mot:
-            print(mot+" "+frame)
-            compteurFrames=compteurFrames+1
-            print(compteurFrames)
-            fresultat.write(frame+" ")
-            for j in range (1, len(t)) :
-                string=t[j]
-                fresultat.write(string+" ")
-            fresultat.write("\n")
-            frame=fframes.readline()
-            frame=str(frame)
-            frame=frame.lower()
-            tartiflette=frame.split()
-            frame=tartiflette[0]
-        else :
-            frame=fframes.readline()
-            frame=str(frame)
-            frame=frame.lower()
-            tartiflette=frame.split()
-            frame=tartiflette[0]
-        #print(mot+" "+frame)
-    
-    fframes.close()
-    fframes=open('C:\\Users\\cleme\\Desktop\\liste_des_frames.txt','r',encoding='UTF8')
-fresultat.close()
 
-"""f= open('C:\\Users\\cleme\\numberbatch-en-17.04b.txt','r',encoding='UTF8')
+
+f= open("C:\\Users\\cleme\git\\Comprendre-et-raisonner-pour-un-personnage-virtuel\\resultat.txt",'r',encoding='UTF8')
+
 words=[]
 tmp=[]
 coordinates=[]
@@ -72,21 +31,26 @@ for line in f:
             t[j]=float(string)
     words.append(t[0])
     tmp=t[1:len(t)]
-    coordinates.append(tmp)"""
+    coordinates.append(tmp)
 
 
 
-"""def distance(n, x, y):
+def distance(n, x, y):
     res=0
     for i in range(n):
          res=res+abs(float(x[i])-float(y[i]))
     return res
-n=4
+    
+    
+    
+n=10
 kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
 print(kmeans.labels_)
 print(kmeans.cluster_centers_)
 clustersParMots=[]
 clustersParValeurs=[]
+
+
 for i in range (n):
     listeClusterIParMots=[]
     listeClusterIParValeurs=[]
@@ -96,6 +60,8 @@ for i in range (n):
             listeClusterIParValeurs.append(coordinates[j])
     clustersParValeurs.append(listeClusterIParValeurs)
     clustersParMots.append(listeClusterIParMots)
+    
+    
 print(clustersParMots)
 minimum=[]
 positionCentre=[0 for i in range(n)]
@@ -113,4 +79,5 @@ print(positionCentre)
 centreString=""
 for i in range(n):
     centreString=centreString+" "+words[positionCentre[i]]
-print(centreString)"""
+
+print(centreString)
