@@ -7,35 +7,49 @@ Created on Fri Jun 16 11:34:06 2017
 
 import numpy as np 
 from sklearn.cluster import KMeans
-
+fresultat=open('C:\\Users\\cleme\\Desktop\\resultat.txt','w',encoding='UTF8')
 fframes= open('C:\\Users\\cleme\\Desktop\\liste_des_frames.txt','r',encoding='UTF8')
 fdata=open('C:\\Users\\cleme\\numberbatch-en-17.04b.txt','r',encoding='UTF8')
-i=0
+compteurFrames=0
+compteurMots=0
 fdata.readline()
 words=[]
-tmp=[]
-coordinates=[]
+tartiflette=[]
 for line in fdata:
     t=line.split()
-    i=i+1
-    print(i)
+    compteurMots=compteurMots+1
     mot=t[0]
-    frame=fdata.readline
-    while mot!=frame:
-        frame=fdata.readline
-    if mot==frame:
-        t=line.split()
-        i=i+1
-        print(i)
-        for j in range (1, len(t)) :
-            string=t[j]
-            if string.startswith('-'):
-                string=string.replace('-','')
-                float(string)
-                t[j]=-float(string)
-            else :
-                t[j]=float(string)
-    words.append
+    frame=fframes.readline()
+    frame=str(frame)
+    frame=frame.lower()
+    tartiflette=frame.split()
+    frame=tartiflette[0]
+    while (frame!="worry"):
+        if frame==mot:
+            print(mot+" "+frame)
+            compteurFrames=compteurFrames+1
+            print(compteurFrames)
+            fresultat.write(frame+" ")
+            for j in range (1, len(t)) :
+                string=t[j]
+                fresultat.write(string+" ")
+            fresultat.write("\n")
+            frame=fframes.readline()
+            frame=str(frame)
+            frame=frame.lower()
+            tartiflette=frame.split()
+            frame=tartiflette[0]
+        else :
+            frame=fframes.readline()
+            frame=str(frame)
+            frame=frame.lower()
+            tartiflette=frame.split()
+            frame=tartiflette[0]
+        #print(mot+" "+frame)
+    
+    fframes.close()
+    fframes=open('C:\\Users\\cleme\\Desktop\\liste_des_frames.txt','r',encoding='UTF8')
+fresultat.close()
 
 """f= open('C:\\Users\\cleme\\numberbatch-en-17.04b.txt','r',encoding='UTF8')
 words=[]
@@ -58,11 +72,11 @@ for line in f:
             t[j]=float(string)
     words.append(t[0])
     tmp=t[1:len(t)]
-    coordinates.append(tmp)
+    coordinates.append(tmp)"""
 
 
 
-def distance(n, x, y):
+"""def distance(n, x, y):
     res=0
     for i in range(n):
          res=res+abs(float(x[i])-float(y[i]))
@@ -99,4 +113,4 @@ print(positionCentre)
 centreString=""
 for i in range(n):
     centreString=centreString+" "+words[positionCentre[i]]
-print(centreString) """
+print(centreString)"""
