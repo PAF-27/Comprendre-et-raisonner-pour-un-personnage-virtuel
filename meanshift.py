@@ -10,17 +10,13 @@ from sklearn.cluster import MeanShift, estimate_bandwidth
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.decomposition import PCA
 
-f = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/numberbatch-en-17.04b.txt", "r",encoding='UTF8')
-
-#f= open('C:\\Users\\cleme\\Desktop\\test.txt','r',encoding='UTF8')
-
+f= open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/resultat.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
 f.readline()
 tmp2=[]
 i=0
-
 for line in f:
     t=line.split()
     i=i+1
@@ -37,24 +33,18 @@ for line in f:
     tmp=t[1:len(t)]
     coordinates.append(tmp)
     
-pca = PCA(n_components=50)
-pca.fit(coordinates)
-print(pca.explained_variance_ratio_)
     
-    
-X, _ = make_blobs(n_samples=i, centers=coordinates, cluster_std=0.6)
+X, _ = make_blobs(n_samples=i, centers=coordinates)
 
-bandwidth = estimate_bandwidth(X, quantile = 0.2 , n_samples = i)
-
-
-
+bandwidth = estimate_bandwidth(X,  n_samples = i)
 
 ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
 ms.fit(X)
 labels = ms.labels_
 cluster_centers = ms.cluster_centers_
-
+print(cluster_centers)
 labels_unique = np.unique(labels)
+print(labels_unique)
 n_clusters_ = len(labels_unique)
 
 print("number of estimated clusters : %d" % n_clusters_)

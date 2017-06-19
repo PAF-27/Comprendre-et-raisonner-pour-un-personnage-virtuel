@@ -8,38 +8,9 @@ Created on Fri Jun 16 11:34:06 2017
 import numpy as np 
 from sklearn.cluster import KMeans
 
-fdata = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/numberbatch-en-17.04b.txt", "r",encoding='UTF8')
-fframes = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/ListedesFrames.txt", "r",encoding='UTF8')
-#f= open('C:\\Users\\cleme\\Desktop\\test.txt','r',encoding='UTF8')
 
-i=0
-fdata.readline()
-words=[]
-tmp=[]
-coordinates=[]
-for line in fdata:
-    t=line.split()
-    i=i+1
-    print(i)
-    mot=t[0]
-    frame=fdata.readline
-    while mot!=frame:
-        frame=fdata.readline
-    if mot==frame:
-        t=line.split()
-        i=i+1
-        print(i)
-        for j in range (1, len(t)) :
-            string=t[j]
-            if string.startswith('-'):
-                string=string.replace('-','')
-                float(string)
-                t[j]=-float(string)
-            else :
-                t[j]=float(string)
-    words.append
 
-"""f= open('C:\\Users\\cleme\\numberbatch-en-17.04b.txt','r',encoding='UTF8')
+f= open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/resultat.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
@@ -69,12 +40,16 @@ def distance(n, x, y):
     for i in range(n):
          res=res+abs(float(x[i])-float(y[i]))
     return res
-n=4
+    
+    
+    
+n=10
 kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
 print(kmeans.labels_)
 print(kmeans.cluster_centers_)
 clustersParMots=[]
 clustersParValeurs=[]
+
 for i in range (n):
     listeClusterIParMots=[]
     listeClusterIParValeurs=[]
@@ -84,6 +59,7 @@ for i in range (n):
             listeClusterIParValeurs.append(coordinates[j])
     clustersParValeurs.append(listeClusterIParValeurs)
     clustersParMots.append(listeClusterIParMots)
+    
 print(clustersParMots)
 minimum=[]
 positionCentre=[0 for i in range(n)]
@@ -101,4 +77,4 @@ print(positionCentre)
 centreString=""
 for i in range(n):
     centreString=centreString+" "+words[positionCentre[i]]
-print(centreString) """
+print(centreString)
