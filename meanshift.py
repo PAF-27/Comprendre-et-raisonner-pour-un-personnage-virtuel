@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jun 16 11:34:06 2017
+Created on Mon Jun 19 09:28:25 2017
 
 @author: zainabhabas
 """
 
 import numpy as np 
-from sklearn.cluster import KMeans
+from sklearn.cluster import MeanShift, estimate_bandwidth
+from sklearn.datasets.samples_generator import make_blobs
 
 f = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/numberbatch-en-17.04b.txt", "r",encoding='UTF8')
 
@@ -18,6 +19,7 @@ coordinates=[]
 f.readline()
 tmp2=[]
 i=0
+
 for line in f:
     t=line.split()
     i=i+1
@@ -34,8 +36,17 @@ for line in f:
     tmp=t[1:len(t)]
     coordinates.append(tmp)
     
-#X=zip(words, coordinates)
-#Y = np.matrix(X)
-kmeans = KMeans(n_clusters=2, random_state=0).fit(coordinates)
-print(kmeans.labels_)
-print(kmeans.cluster_centers_)
+X, _ = make_blobs(n_samples=i, centers=coordinates, cluster_std=0.6)
+
+bandwidth = estimate_bandwidth(X, quantile = 0.2 , n_samples = i)
+
+ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
+ms.fit(X)
+labels = ms.labels_
+cluster_centers = ms.cluster_centers_
+
+labels_unique = np.unique(labels)
+n_clusters_ = len(labels_unique)
+
+print("number of estimated clusters : %d" % n_clusters_)
+
