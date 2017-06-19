@@ -8,6 +8,7 @@ Created on Mon Jun 19 09:28:25 2017
 import numpy as np 
 from sklearn.cluster import MeanShift, estimate_bandwidth
 from sklearn.datasets.samples_generator import make_blobs
+from sklearn.decomposition import PCA
 
 f = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/numberbatch-en-17.04b.txt", "r",encoding='UTF8')
 
@@ -36,9 +37,17 @@ for line in f:
     tmp=t[1:len(t)]
     coordinates.append(tmp)
     
+pca = PCA(n_components=50)
+pca.fit(coordinates)
+print(pca.explained_variance_ratio_)
+    
+    
 X, _ = make_blobs(n_samples=i, centers=coordinates, cluster_std=0.6)
 
 bandwidth = estimate_bandwidth(X, quantile = 0.2 , n_samples = i)
+
+
+
 
 ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
 ms.fit(X)
