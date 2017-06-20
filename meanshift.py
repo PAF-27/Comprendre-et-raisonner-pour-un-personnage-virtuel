@@ -34,12 +34,12 @@ for line in f:
     coordinates.append(tmp)
     
     
-X, _ = make_blobs(n_samples=i, centers=coordinates)
+#X, _ = make_blobs(n_samples=500, centers=coordinates)
 
-bandwidth = estimate_bandwidth(X,  n_samples = i)
+#bandwidth = estimate_bandwidth(X,quantile =0.2,  n_samples = i)
 
-ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
-ms.fit(X)
+ms = MeanShift()
+ms.fit(coordinates)
 labels = ms.labels_
 cluster_centers = ms.cluster_centers_
 print(cluster_centers)
