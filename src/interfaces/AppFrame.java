@@ -37,7 +37,7 @@ public class AppFrame extends JFrame {
         JRadioButtonMenuItem word2Vec = new JRadioButtonMenuItem("Word2Vec");
         conceptNet.setSelected(true);
         groupWordEmbedding.add(word2Vec);
-        JRadioButtonMenuItem gloVe = new JRadioButtonMenuItem("GolVo");
+        JRadioButtonMenuItem gloVe = new JRadioButtonMenuItem("GloVo");
         gloVe.setSelected(true);
         groupWordEmbedding.add(gloVe);
         wordEmbedding.add(conceptNet);
@@ -79,6 +79,9 @@ public class AppFrame extends JFrame {
 
         textArea = new TextArea();
 
+        Label label = new Label("Please enter a sentence:");
+
+        inputPanel.add(label);
         inputPanel.add(textArea);
         inputPanel.add(enter);
 
