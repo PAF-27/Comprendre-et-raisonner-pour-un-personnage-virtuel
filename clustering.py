@@ -21,7 +21,6 @@ i=0
 for line in f:
     t=line.split()
     i=i+1
-    print(i)
     for j in range (1, len(t)) :
         string=t[j]
         if string.startswith('-'):
@@ -138,6 +137,20 @@ def trouverDistanceEtCentreTchebychev(n,clustersParValeurs,kmeans):
     return centreString, distanceMoyenne
 #//////////////////////////////////////////////////////////////
 
+#permet de calculer le centre et l'inertie de chaque cluster
+def trouverInertie(n,clustersParValeurs,kmeans):
+    distanceCarreCentresTmp=[0 for i in range(len(clustersParValeurs))]
+    inertie=[0 for i in range(len(clustersParValeurs))]
+    for i in range(len(clustersParValeurs)):
+        for point in clustersParValeurs[i]:
+            for centre in kmeans.cluster_centers_:
+                distanceCarreCentresTmp[i]=(distance(n,point,centre))**2
+            inertie[i]=inertie[i]+min(distanceCarreCentresTmp)
+    inertieTotale=sum(inertie)
+    inertieMoyenne=inertieTotale/len(clustersParValeurs)
+    return inertieTotale,inertieMoyenne,inertie
+#//////////////////////////////////////////////////////////////
+
 
 #permet de trouver les clusters avec un paramètre entier n 
 def KMEANS(n):
@@ -228,10 +241,6 @@ def trouverMax(liste):
             valeurmax=liste[indicemax]
     return indicemax
 
-#variables possibles
-n=561
-p=10
-#/////////////////////////////////////////////////////////////////////////////////
 
 #renvoie une liste des i mots les plus proches du centre du cluster
 def motsLesPlusProchesUnCluster(clusterParValeurs,clusterParMots,nombreDeProches,clusterCentre):
@@ -271,8 +280,37 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
 #////////////////////////////////////////////////////////////////////////////////////////
 
 
+"""
+#code permettant de calculer l'inertie totale et moyenne en fonction d'un nombre de clusters
+clustersParValeurs, kmeans=KMEANS(9)[0],KMEANS(9)[4]
+inertieTotale,inertieMoyenne,inertie=trouverInertie(300,clustersParValeurs,kmeans)
+print(inertieTotale)
+print(inertieMoyenne)
+#print(inertie)
+#inertie de 5854.46 pour 9 clusters
+"""
+
+"""
+#code permettant de tracer l'inertie totale en fonction du nombre de clusters
+n=20
+listeInertieTotale=[]
+listeInertieMoyenne=[]
+for i in range(1,n):
+    clustersParValeurs, kmeans=KMEANS(i)[0],KMEANS(i)[4]
+    inertieTotale,inertieMoyenne,inertie=trouverInertie(300,clustersParValeurs,kmeans)
+    listeInertieTotale.append(inertieTotale)
+    listeInertieMoyenne.append(inertieMoyenne)
+print(listeInertieTotale)
+pl.plot([i for i in range(1, n)], listeInertieTotale)
+pl.show()
+#/////////////////////////////////////////////////////////////////////////////////////
+#point interessant à 9 clusters
+"""
+
+
+
 #ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
-nombreDeClusters=36
+nombreDeClusters=9
 clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
 motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
 for i in range(len(motsLesPlusProches)):
@@ -286,6 +324,8 @@ for i in range(len(motsLesPlusProches)):
 
 """
 #code permettant de tracer la distance moyenne choisie en fonction du nombre de clusters
+n=561
+p=10
 listeDistanceMoyenne=comparaisonDistanceMoyenne(n)
 pl.plot([i for i in range(1, n+1)], listeDistanceMoyenne)
 pl.show()
