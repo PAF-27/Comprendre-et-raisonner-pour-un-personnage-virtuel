@@ -10,17 +10,13 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as pl
 
 
-#permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dismension
+#permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dimensions
 f= open("C:\\Users\\cleme\git\\Comprendre-et-raisonner-pour-un-personnage-virtuel\\resultat.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
-f.readline()
-tmp2=[]
-i=0
 for line in f:
     t=line.split()
-    i=i+1
     for j in range (1, len(t)) :
         string=t[j]
         if string.startswith('-'):
@@ -32,7 +28,30 @@ for line in f:
     words.append(t[0])
     tmp=t[1:len(t)]
     coordinates.append(tmp)
+f.close()
 #//////////////////////////////////////////////////////////////////////////////
+
+
+#permet de décoder le fichier texte contenant la projection des image schemas sur un espace en 300 dimensions
+f2= open("C:\\Users\\cleme\\Desktop\\image_schemas_a_utiliser_extraites.txt",'r',encoding='UTF8')
+words2=[]
+tmp=[]
+coordinates2=[]
+for line in f2:
+    t=line.split()
+    for j in range (1, len(t)) :
+        string=t[j]
+        if string.startswith('-'):
+            string=string.replace('-','')
+            float(string)
+            t[j]=-float(string)
+        else :
+            t[j]=float(string)
+    words2.append(t[0])
+    tmp=t[1:len(t)]
+    coordinates2.append(tmp)
+f2.close()
+#////////////////////////////////////////////////////////////////////////////////////
 
 
 #fonction de calcul de distance
@@ -161,6 +180,15 @@ def KMEANS(n):
 #///////////////////////////////////////////////////////////////
 
 
+#permet de trouver les clusters avec un paramètre entier n  et une liste de n centres pour l'initialisation
+def KMEANSInit(n, coordinatesCenters, coordinates):
+    kmeans = KMeans(n_clusters=n, init=coordinatesCenters,n_init=1).fit(coordinates)
+    clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
+    centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans)
+    return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
+#///////////////////////////////////////////////////////////////
+
+
 #permet de trouver les clusters avec un paramètre entier n ainsi qu'un paramètre p selon la distance de Minkowski
 def KMEANSMinkowski(n,p):
     kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
@@ -279,6 +307,53 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
     return mots
 #////////////////////////////////////////////////////////////////////////////////////////
 
+#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster en initialisant les clusters aux image schemas
+nombreDeClusters=9
+
+"""
+coordonneesCentres=np.asarray(coordinates2)
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
+motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
+for i in range(len(motsLesPlusProches)):
+    dansUnCluster="cluster numero "+str(i)+" : "
+    for j in motsLesPlusProches[i]:
+        dansUnCluster=dansUnCluster+" | "+j
+    dansUnCluster=dansUnCluster+" |\n"
+    print(dansUnCluster)
+print()
+"""
+
+#permet de lister tous les elements dans un cluster
+def lister(words,labels,i):
+    res=[]
+    for j in range(len(labels)):
+        if labels[j]==i:
+            res.append(words[j])
+    return res
+
+#/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#code pour lister tous les elements des clusters
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
+print(kmeans.labels_)
+for i in range(len(clustersParMots)):
+    listeDesMots="cluster numero "+str(i)+" : "
+    for j in clustersParMots[i]:
+        listeDesMots=listeDesMots+j+" "
+    print(listeDesMots+"\n")
+"""
+#code pour forcer les centres et lister tous les elements des clusters
+coordonneesCentres=np.asarray(coordinates2)
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
+print(kmeans.labels_)
+for i in range(len(clustersParMots)):
+    listeDesMots="cluster numero "+str(i)+" : "
+    for j in clustersParMots[i]:
+        listeDesMots=listeDesMots+j+" "
+    print(listeDesMots+"\n")
+#///////////////////////////////////////////////////////////////////////////////:
+""" 
+
 
 """
 #code permettant de calculer l'inertie totale et moyenne en fonction d'un nombre de clusters
@@ -308,7 +383,7 @@ pl.show()
 """
 
 
-
+"""
 #ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
 nombreDeClusters=9
 clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
@@ -320,7 +395,7 @@ for i in range(len(motsLesPlusProches)):
     dansUnCluster=dansUnCluster+" |\n"
     print(dansUnCluster)
 #///////////////////////////////////////////////////////////////////////////////////////////
-
+"""
 
 """
 #code permettant de tracer la distance moyenne choisie en fonction du nombre de clusters
