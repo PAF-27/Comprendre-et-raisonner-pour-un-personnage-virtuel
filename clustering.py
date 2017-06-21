@@ -10,10 +10,9 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as pl
 
 
->>>>>>> origin/clement
 
 #permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dismension
-f= open("C:\\Users\\cleme\git\\Comprendre-et-raisonner-pour-un-personnage-virtuel\\resultat.txt",'r',encoding='UTF8')
+f= open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/resultat.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
@@ -36,6 +35,30 @@ for line in f:
     tmp=t[1:len(t)]
     coordinates.append(tmp)
 #//////////////////////////////////////////////////////////////////////////////
+    
+#extraction des coordonnées des centroids pour l'initialisation  
+f_centroids = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/image_schemas_a_utiliser_extraites.txt",'r',encoding='UTF8')
+i = 0
+centroids_coordinates = []
+centroids_words = []
+tmp2=[]
+
+for line in f_centroids:
+    t=line.split()
+    i=i+1
+    print(i)
+    for j in range (1, len(t)) :
+        string=t[j]
+        if string.startswith('-'):
+            string=string.replace('-','')
+            float(string)
+            t[j]=-float(string)
+        else :
+            t[j]=float(string)
+    centroids_words.append(t[0])
+    tmp2=t[1:len(t)]
+    centroids_coordinates.append(tmp2)    
+print(centroids_words) 
 
 
 #fonction de calcul de distance
@@ -47,7 +70,7 @@ def distance(n, x, y):
 
     
     
-    
+"""    
 n=40
 kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
 print(kmeans.labels_)
@@ -82,7 +105,7 @@ print(positionCentre)
 centreString=""
 for i in range(n):
     centreString=centreString+" "+words[positionCentre[i]]
-print(centreString)
+print(centreString)"""
 
 #///////////////////////////////////////////////////////////////////////////
 
@@ -186,7 +209,7 @@ def trouverDistanceEtCentreTchebychev(n,clustersParValeurs,kmeans):
 
 #permet de trouver les clusters avec un paramètre entier n 
 def KMEANS(n):
-    kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
+    kmeans = KMeans(n_clusters=n, init = np.array(centroids_coordinates), n_init= 1).fit(coordinates)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
     centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans)
     return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
@@ -280,7 +303,7 @@ def elbowPoint(points):
   max_index = secondDerivative.index(max(secondDerivative))
   elbow_point = max_index + 1
   return elbow_point
-
+"""
 #187
 points   = comparaisonDistanceMoyenneTchebychev(n)
 max_point = elbowPoint(points)
@@ -289,10 +312,9 @@ print(max_point)
 
 pl.plot([max_point for i in range(1,11)] , [i for i in range(1, 11)] )
 pl.plot([i for i in range(1, n+1)], points)
-pl.show()
+pl.show()"""
 
-            valeurmin=liste[indicemin]
-    return indicemin
+    
 #///////////////////////////////////////////////////////////////////////////////////
 
 def trouverMax(liste):
@@ -347,19 +369,6 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
 #////////////////////////////////////////////////////////////////////////////////////////
 
 
-#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
-nombreDeClusters=36
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
-motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
-for i in range(len(motsLesPlusProches)):
-    dansUnCluster="cluster numero "+str(i)+" : "
-    for j in motsLesPlusProches[i]:
-        dansUnCluster=dansUnCluster+" | "+j
-    dansUnCluster=dansUnCluster+" |\n"
-    print(dansUnCluster)
-#///////////////////////////////////////////////////////////////////////////////////////////
-
-
 """
 #code permettant de tracer la distance moyenne choisie en fonction du nombre de clusters
 listeDistanceMoyenne=comparaisonDistanceMoyenne(n)
@@ -374,4 +383,16 @@ print(ecart)
 print(elbow)
 #resultat : 316 clusters 
 #////////////////////////////////////////////////////////////////////////////////////////////"""
+
+#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
+nombreDeClusters=44
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(44)
+motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
+for i in range(len(motsLesPlusProches)):
+    dansUnCluster="cluster numero "+str(i)+" : "
+    for j in motsLesPlusProches[i]:
+        dansUnCluster=dansUnCluster+" | "+j
+    dansUnCluster=dansUnCluster+" |\n"
+    print(dansUnCluster)
+#///////////////////////////////////////////////////////////////////////////////////////////
 
