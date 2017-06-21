@@ -7,8 +7,6 @@ Created on Mon Jun 19 09:28:25 2017
 
 import numpy as np 
 from sklearn.cluster import MeanShift, estimate_bandwidth
-from sklearn.datasets.samples_generator import make_blobs
-from sklearn.decomposition import PCA
 
 f= open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/resultat.txt",'r',encoding='UTF8')
 words=[]
@@ -34,11 +32,11 @@ for line in f:
     coordinates.append(tmp)
     
     
-#X, _ = make_blobs(n_samples=500, centers=coordinates)
 
-#bandwidth = estimate_bandwidth(X,quantile =0.2,  n_samples = i)
 
-ms = MeanShift()
+bandwidth = estimate_bandwidth(np.asarray(coordinates) ,quantile =0.5)
+ms = MeanShift(bandwidth=bandwidth)
+
 ms.fit(coordinates)
 labels = ms.labels_
 cluster_centers = ms.cluster_centers_
