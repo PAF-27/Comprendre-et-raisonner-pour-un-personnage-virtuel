@@ -9,10 +9,9 @@ import numpy as np
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as pl
 
-    
-    
-#permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dismension
-f= open("C:\\Users\\cleme\git\\Comprendre-et-raisonner-pour-un-personnage-virtuel\\resultat.txt",'r',encoding='UTF8')
+
+
+f= open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/resultat.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
