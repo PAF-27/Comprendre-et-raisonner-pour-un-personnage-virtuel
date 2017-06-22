@@ -8,10 +8,13 @@ Created on Fri Jun 16 11:34:06 2017
 import numpy as np 
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as pl
+import random
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
 
 
 #permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dimensions
-f= open("result_word2vec.txt",'r',encoding='UTF8')
+f= open("frames_word2vec.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
@@ -104,9 +107,6 @@ def trouverDistanceEtCentre(n,clustersParValeurs,kmeans):
     positionCentre=[0 for i in range(n)]
     distanceMoyenne=[0 for i in range(n)]
     for i in range(n):
-        print(i)
-        print(len(kmeans.cluster_centers_))
-        print(len(clustersParValeurs[i]))
         minimum.append(distance(300, clustersParValeurs[i][0], kmeans.cluster_centers_[i]))
         for j in range(len(clustersParValeurs[i])):
             distanceTmp=distance(300,clustersParValeurs[i][j],kmeans.cluster_centers_[i])
@@ -177,7 +177,7 @@ def trouverInertie(n,clustersParValeurs,kmeans):
 
 #permet de trouver les clusters avec un paramètre entier n 
 def KMEANS(n):
-    kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
+    kmeans = KMeans(n_clusters=n, random_state=0,max_iter=1000,n_init=100).fit(coordinates)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
     centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans)
     return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
@@ -313,7 +313,38 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
 #////////////////////////////////////////////////////////////////////////////////////////
 
 #ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster en initialisant les clusters aux image schemas
-nombreDeClusters=45
+nombreDeClusters= 101
+
+# visualisation
+def plot_with_labels(low_dim_embs, words,labels, filename='tsne.png'):
+    label_set = set(labels)
+    color_map = {}
+    r = lambda: random.randint(0,255)
+    for label in label_set:
+        random_color = format('#%02X%02X%02X' % (r(),r(),r()))
+        color_map[label] = random_color
+    
+    assert low_dim_embs.shape[0] >= len(words), 'More words than embeddings'
+    plt.figure(figsize=(18, 18))  # in inches
+    for i, label in enumerate(words):
+        x, y = low_dim_embs[i, :]
+        plt.scatter(x, y,color = color_map[labels[i]])
+        plt.annotate(label,
+        xy=(x, y),
+        xytext=(5, 2),
+        textcoords='offset points',
+        ha='right',
+        va='bottom')
+
+    plt.savefig(filename)
+
+# reverdiction
+def getframe2label(clustersParMots):
+    frame2label = {}
+    for cluster in clustersParMots:
+        for frame in cluster:
+            frame2label[frame] = clustersParMots.index(cluster)
+    return frame2label
 
 """
 coordonneesCentres=np.asarray(coordinates2)
@@ -346,6 +377,16 @@ for i in range(len(clustersParMots)):
     for j in clustersParMots[i]:
         listeDesMots=listeDesMots+j+" "
     print(listeDesMots+"\n")
+    
+    
+tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=5000)
+low_dim_embs = tsne.fit_transform(coordinates[:])
+frame2label = getframe2label(clustersParMots)
+labels = []
+for word in words:
+    labels.append(frame2label[word])
+plot_with_labels(low_dim_embs, words,labels)
+
 """
 #code pour forcer les centres et lister tous les elements des clusters
 coordonneesCentres=np.asarray(coordinates2)
@@ -370,16 +411,17 @@ print(inertieMoyenne)
 #inertie de 5854.46 pour 9 clusters
 """
 
+
 """
 #code permettant de tracer l'inertie totale en fonction du nombre de clusters
-n=20
+n=40
 listeInertieTotale=[]
 listeInertieMoyenne=[]
 for i in range(1,n):
+    print(i)
     clustersParValeurs, kmeans=KMEANS(i)[0],KMEANS(i)[4]
-    inertieTotale,inertieMoyenne,inertie=trouverInertie(300,clustersParValeurs,kmeans)
+    inertieTotale=kmeans.inertia_
     listeInertieTotale.append(inertieTotale)
-    listeInertieMoyenne.append(inertieMoyenne)
 print(listeInertieTotale)
 pl.plot([i for i in range(1, n)], listeInertieTotale)
 pl.show()

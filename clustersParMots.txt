@@ -1,0 +1,101 @@
+0 arithmetic 
+1 departing 
+2 dressing 
+3 frequency 
+4 authority 
+5 placing 
+6 request 
+7 emergency 
+8 lending 
+9 chatting 
+10 surpassing 
+11 purpose 
+12 indicating 
+13 emitting 
+14 exporting 
+15 employing 
+16 animals 
+17 offering 
+18 desiring 
+19 attack 
+20 system 
+21 extradition 
+22 difficulty 
+23 patrolling 
+24 receiving 
+25 halt 
+26 summarizing 
+27 origin 
+28 substance 
+29 memorization 
+30 artificiality 
+31 sequence 
+32 getting 
+33 inspecting 
+34 desirability 
+35 attention attributes citing creating duplication emphasizing evoking exemplar grasp heralding importance key mention questioning reassuring reliance reshaping translating 
+36 suitability usefulness 
+37 capacity memory size supply 
+38 activity attending awareness collaboration competition conduct discussion inclusion participation presence ratification 
+39 annoyance certainty chaos expectation fear feeling friction impression perception suspicion warning worry 
+40 clemency commutation pardon 
+41 abusing arrest death detaining explosion imprisonment infecting killing 
+42 ammunition armor convoy firefighting military noncombatant 
+43 arriving assemble disembarking encounter entourage fleeing touring travel traversing visiting wearing 
+44 improvised_explosive_device 
+45 arson kidnapping offenses rape robbery sex theft violence 
+46 documents evidence hearsay information records 
+47 cache capability compatibility dimension encoding expertise function gizmo scope sharpness weapon 
+48 bringing downing dunking firing giving intercepting prank redirecting releasing sending surrendering taking undressing 
+49 arraignment execution prison sentencing trial verdict 
+50 breathing sleep 
+51 obscurity 
+52 installing locating 
+53 abandonment accompaniment adducing amalgamation boundary cogitation daring dispersal emanating emotions examination experimentation fullness grinding gusto judgment manner misdeed motion negation opinion posture prevarication progression rashness reading_aloud rebellion rejuvenation renunciation revolution satisfying shapes sounds suasion subversion text volubility 
+54 hedging 
+55 shopping store 
+56 abundance adjacency aesthetics aggregate aging degree differentiation domain domination expensiveness increment limitation manipulation medium precariousness proportion quantity range rank scarcity stinginess strictness timespan trendiness 
+57 ambient_temperature temperature 
+58 clothing containers food hospitality ingredients subsisting tasting 
+59 precipitation 
+60 defending destroying endangering enforcing preserving protecting rescuing 
+61 appointing arranging becoming choosing color custom deciding exercising grooming hiring preference quitting renting reserving scheduling willingness 
+62 amassing bungling contacting deserving forging hindering imitating justifying labeling performers recording regard relation reporting representing sharing silencing supporting thriving tolerating using 
+63 vocalizations 
+64 alternatives impact legality likelihood possibility probability 
+65 intoxicants intoxication 
+66 fame popularity prominence sensation 
+67 assistance borrowing closure funding money repayment 
+68 counterattack repel 
+69 accomplishment coincidence cure gesture goal inclination instance luck means omen opportunity reason reasoning rite sign timetable topic 
+70 importing smuggling 
+71 accoutrements candidness dynamism facial_expression familiarity idiosyncrasy locale openness partiality sociability 
+72 connectors fastener 
+73 fining 
+74 agriculture building buildings businesses communication economy electricity expansion infrastructure mining project recovery 
+75 ingestion 
+76 destiny 
+77 commemorative 
+78 alliance commitment compliance entity existence identity leadership membership network offshoot organization publishing representative responsibility statement team trust 
+79 avoiding damaging dodging escaping evading feigning forgoing limiting losing surviving thwarting trap triggering 
+80 adjusting assessing estimating predicting studying 
+81 corporal_punishment 
+82 besieging colonization conquering invading 
+83 unemployment_rate 
+84 wagering 
+85 piracy terrorism 
+86 corroding 
+87 age billing catastrophe contingency control craft delivery direction dying eclipse event exchange fields fugitive history hunting institutions law measures namesake passing pattern people performing_arts possession practice predicament preliminaries process remainder research residence response rest scrutiny state surrounding transfer type vehicle verification weather work 
+88 commonality kinship similarity 
+89 addiction 
+90 appellations artifact categorization causation distinctiveness diversity institutionalization notability obviousness ontogeny simultaneity sufficiency typicality 
+91 atonement contrition forgiveness reparation resurrection revenge 
+92 aiming appeal attempt needing scouring seeking undergoing waiting 
+93 accuracy completeness correctness 
+94 roadways 
+95 detaching 
+96 frugality 
+97 attaching burying containing cutting emptying erasing excreting filling planting removing replacing retaining rotting separating soaking storing 
+98 manufacturing plants 
+99 immobilization 
+100 bragging complaining protest quarreling telling 
