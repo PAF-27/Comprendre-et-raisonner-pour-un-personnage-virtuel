@@ -33,7 +33,7 @@ f.close()
 
 
 #permet de décoder le fichier texte contenant la projection des image schemas sur un espace en 300 dimensions
-f2= open("C:\\Users\\cleme\\Desktop\\image_schemas_a_utiliser_extraites.txt",'r',encoding='UTF8')
+f2= open("C:\\Users\\cleme\\Desktop\\image_schemas_a_utiliser_extraites_avec_process_et_bounded.txt",'r',encoding='UTF8')
 words2=[]
 tmp=[]
 coordinates2=[]
@@ -98,7 +98,7 @@ def trouverCluster(n,kmeans):
 
 
 #permet de calculer le centre et la distance moyenne pour chaque cluster
-def trouverDistanceEtCentre(n,clustersParValeurs,kmeans):
+def trouverDistanceEtCentre(n,clustersParValeurs,kmeans,clustersParMots):
     minimum=[]
     positionCentre=[0 for i in range(n)]
     distanceMoyenne=[0 for i in range(n)]
@@ -112,7 +112,7 @@ def trouverDistanceEtCentre(n,clustersParValeurs,kmeans):
         distanceMoyenne[i]=distanceMoyenne[i]/len(clustersParValeurs[i])
     centreString=""
     for i in range(n):
-        centreString=centreString+" "+words[positionCentre[i]]
+        centreString=centreString+" "+clustersParMots[i][positionCentre[i]]
     return centreString, distanceMoyenne
 #//////////////////////////////////////////////////////////////
 
@@ -175,7 +175,7 @@ def trouverInertie(n,clustersParValeurs,kmeans):
 def KMEANS(n):
     kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
-    centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans)
+    centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans,clustersParMots)
     return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
 #///////////////////////////////////////////////////////////////
 
@@ -184,7 +184,7 @@ def KMEANS(n):
 def KMEANSInit(n, coordinatesCenters, coordinates):
     kmeans = KMeans(n_clusters=n, init=coordinatesCenters,n_init=1).fit(coordinates)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
-    centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans)
+    centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans,clustersParMots)
     return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
 #///////////////////////////////////////////////////////////////
 
@@ -308,7 +308,7 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
 #////////////////////////////////////////////////////////////////////////////////////////
 
 #ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster en initialisant les clusters aux image schemas
-nombreDeClusters=9
+nombreDeClusters=101
 
 """
 coordonneesCentres=np.asarray(coordinates2)
@@ -320,7 +320,6 @@ for i in range(len(motsLesPlusProches)):
         dansUnCluster=dansUnCluster+" | "+j
     dansUnCluster=dansUnCluster+" |\n"
     print(dansUnCluster)
-print()
 """
 
 #permet de lister tous les elements dans un cluster
@@ -330,29 +329,33 @@ def lister(words,labels,i):
         if labels[j]==i:
             res.append(words[j])
     return res
-
 #/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #code pour lister tous les elements des clusters
 clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
-print(kmeans.labels_)
 for i in range(len(clustersParMots)):
     listeDesMots="cluster numero "+str(i)+" : "
     for j in clustersParMots[i]:
         listeDesMots=listeDesMots+j+" "
-    print(listeDesMots+"\n")
+    print(listeDesMots)
+#//////////////////////////////////////////////////////////////////////////////////
+
+
+
 """
 #code pour forcer les centres et lister tous les elements des clusters
 coordonneesCentres=np.asarray(coordinates2)
 clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
 print(kmeans.labels_)
 for i in range(len(clustersParMots)):
-    listeDesMots="cluster numero "+str(i)+" : "
+    listeDesMots="cluster "+ words2[i]+ " : "
     for j in clustersParMots[i]:
-        listeDesMots=listeDesMots+j+" "
-    print(listeDesMots+"\n")
+        listeDesMots=listeDesMots+j+" | "
+    print(listeDesMots)
+print(kmeans.inertia_)
+#inertie comparable a 36 clusters sans forcer les centres
 #///////////////////////////////////////////////////////////////////////////////:
-""" 
+"""
 
 
 """
@@ -365,6 +368,28 @@ print(inertieMoyenne)
 #inertie de 5854.46 pour 9 clusters
 """
 
+
+"""
+#code permettant de tracer l'inertie totale en fonction du nombre de clusters avec l'inertie de sklearn.kmeans
+n=561
+listeInertieTotale=[]
+for i in range(1,n):
+    clustersParValeurs, kmeans=KMEANS(i)[0],KMEANS(i)[4]
+    listeInertieTotale.append(kmeans.inertia_)
+print(listeInertieTotale)
+pl.plot([i for i in range(1, n)], listeInertieTotale)
+pl.show()
+valeurEn1=listeInertieTotale[0]
+coeff=valeurEn1/561
+valeurTheorique=[coeff*(562-i) for i in range(561)]
+ecart=[abs(valeurTheorique[i]-listeInertieTotale[i]) for i in range(len(listeInertieTotale))]
+elbow=trouverMax(ecart)
+print(ecart)
+print(elbow)
+#/////////////////////////////////////////////////////////////////////////////////////
+#point interessant à 9 clusters
+#elbow point a 175 clusters
+"""
 """
 #code permettant de tracer l'inertie totale en fonction du nombre de clusters
 n=20
