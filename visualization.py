@@ -62,8 +62,8 @@ low_dim_embs = tsne.fit_transform(coordinates[:])
 plot_with_labels(low_dim_embs, words,words)
 
  for cluster in clustersParMots:
-    f.write(clustersParMots.index(cluster)
+    f.write(clustersParMots.index(cluster))
     f.write(" ")
     for word in cluster:
-    f.write(" ")
-        f.write("\n")
+    f.write(" ") 
+    f.write("\n")

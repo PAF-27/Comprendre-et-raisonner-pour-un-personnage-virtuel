@@ -1,0 +1,46 @@
+0 thriving growing 
+1 retaining 
+2 age aggregate ammunition attempt attention billing borrowing boundary breathing cache commemorative competition contingency control counterattack custom death delivery destiny direction domination dying encounter exchange feeling goal grinding history increment key luck memory money motion namesake offenses people performers possession practice prank preliminaries protest recording records recovery rejuvenation remainder repayment rest resurrection revenge satisfying sensation sleep sounds state surviving team timespan transfer trap wagering weather work up down back left right near far center periphery in out surface full empty balance blockage diversion collection part whole count 
+3 dodging evading hindering intercepting repel silencing thwarting 
+4 commonality kinship similarity 
+5 aging appointing emptying filling installing removing replacing reshaping removal 
+6 alternatives attributes certainty coincidence cure dimension evidence fear impact likelihood means omen opportunity possibility probability reason sign topic weapon worry attraction link 
+7 accomplishment commitment distinctiveness diversity dynamism expertise familiarity importance openness presence willingness 
+8 duplication process ratification rite timetable verification path cycle process 
+9 clemency commutation pardon 
+10 accuracy capability capacity compatibility medium quantity range scope size suitability usefulness 
+11 arraignment 
+12 arithmetic categorization causation correctness hearsay judgment obviousness reasoning 
+13 adjacency colonization color differentiation dispersal encoding excreting facial_expression function immobilization ingestion institutionalization ontogeny pattern progression shapes sociability typicality unbalance iteration mass superimposition 
+14 arson robbery theft 
+15 atonement contrition forgiveness reparation 
+16 buildings roadways 
+17 accompaniment accoutrements aesthetics candidness chaos cogitation daring emotions expensiveness experimentation frugality fullness gizmo gusto idiosyncrasy inclination manipulation misdeed negation partiality posture precariousness prevarication rashness rebellion renunciation revolution scarcity sharpness simultaneity stinginess strictness suasion trendiness violence volubility counterforce compulsion restraint 
+18 arranging contacting scheduling 
+19 defending enforcing preserving protecting rescuing 
+20 addiction awareness impression perception popularity suspicion 
+21 abandonment abundance adducing amalgamation annoyance appeal appellations bungling citing compliance conduct degree deserving discussion documents domain emanating examination exemplar expectation friction gesture grasp inclusion instance justifying labeling law legality limitation locale manner measures mention notability opinion predicament preference proportion rank reassuring regard relation response responsibility scrutiny statement surrounding text trust type warning content object 
+22 connectors fastener 
+23 corporal_punishment rape sex undressing 
+24 importing smuggling storing 
+25 armor convoy firefighting military noncombatant piracy terrorism 
+26 vocalizations 
+27 abusing adjusting attending bragging choosing complaining deciding detaining downing dunking escaping exercising feigning firing forgoing giving grooming hedging hiring imitating losing needing quarreling questioning quitting reading_aloud renting reserving seeking soaking studying surrendering taking telling tolerating undergoing using waiting wearing 
+28 alliance assistance collaboration communication entity event existence funding identity information institutions leadership membership network offshoot organization participation representative contact 
+29 ambient_temperature precipitation temperature 
+30 agriculture clothing containers electricity food hospitality ingredients subsisting supply tasting 
+31 completeness 
+32 enablement 
+33 unemployment_rate 
+34 improvised_explosive_device 
+35 intoxicants intoxication 
+36 fame obscurity prominence 
+37 aiming amassing assessing attaching becoming bringing burying conquering containing creating emphasizing erasing estimating evoking fining forging heralding locating passing predicting redirecting releasing reporting representing sending separating sharing supporting translating traversing triggering merging splitting matching 
+38 reliance 
+39 activity artifact assemble building businesses catastrophe closure craft economy expansion explosion fields hunting infrastructure manufacturing mining performing_arts planting plants project publishing research residence rotting shopping store vehicle containment 
+40 arrest fugitive kidnapping 
+41 arriving disembarking entourage fleeing scouring touring travel visiting 
+42 avoiding cutting limiting reducing 
+43 besieging corroding damaging destroying detaching endangering infecting invading killing 
+44 sufficiency 
+45 execution imprisonment prison sentencing trial verdict 

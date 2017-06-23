@@ -7,10 +7,10 @@ Created on Fri Jun 16 11:34:06 2017
 
 import numpy as np 
 from sklearn.cluster import KMeans
-import matplotlib.pyplot as pl
 import random
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
+from sklearn.mixture import GMM
 
 
 #permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dimensions
@@ -313,7 +313,7 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
 #////////////////////////////////////////////////////////////////////////////////////////
 
 #ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster en initialisant les clusters aux image schemas
-nombreDeClusters= 101
+nombreDeClusters= 46
 
 # visualisation
 def plot_with_labels(low_dim_embs, words,labels, filename='tsne.png'):
@@ -346,18 +346,6 @@ def getframe2label(clustersParMots):
             frame2label[frame] = clustersParMots.index(cluster)
     return frame2label
 
-"""
-coordonneesCentres=np.asarray(coordinates2)
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
-motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
-for i in range(len(motsLesPlusProches)):
-    dansUnCluster="cluster numero "+str(i)+" : "
-    for j in motsLesPlusProches[i]:
-        dansUnCluster=dansUnCluster+" | "+j
-    dansUnCluster=dansUnCluster+" |\n"
-    print(dansUnCluster)
-print()
-"""
 
 #permet de lister tous les elements dans un cluster
 def lister(words,labels,i):
@@ -367,10 +355,37 @@ def lister(words,labels,i):
             res.append(words[j])
     return res
 
-#/////////////////////////////////////////////////////////////////////////////////////////////////////
+words = words + words2
+coordinates = coordinates + coordinates2
 
+# delete the word
+blacklist = ["departing","dressing","authority","frequency","emergency","request","placing","chatting","surpassing","sequence","indicating","purpose","emitting","employing","memorization","lending","exporting","system","attack","animals"]
+blacklist.append("eclipse")
+blacklist.append("front")
+blacklist.append("desiring")
+blacklist.append("offering")
+blacklist.append("patrolling")
+blacklist.append("difficulty")
+blacklist.append("extradition")
+blacklist.append("halt")
+blacklist.append("receiving")
+blacklist.append("substance")
+blacklist.append("origin")
+blacklist.append("summarizing")
+blacklist.append("artificiality")
+blacklist.append("getting")
+blacklist.append("inspecting")
+blacklist.append("desirability")
+blacklist.append("subversion")
+
+print(len(blacklist))
+for black_word in blacklist:
+    index = words.index(black_word)
+    del words[index]
+    del coordinates[index]
+    
 #code pour lister tous les elements des clusters
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans = KMEANS(nombreDeClusters)
 print(kmeans.labels_)
 for i in range(len(clustersParMots)):
     listeDesMots="cluster numero "+str(i)+" : "
@@ -378,7 +393,7 @@ for i in range(len(clustersParMots)):
         listeDesMots=listeDesMots+j+" "
     print(listeDesMots+"\n")
     
-    
+# visualisation    
 tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=5000)
 low_dim_embs = tsne.fit_transform(coordinates[:])
 frame2label = getframe2label(clustersParMots)
@@ -387,76 +402,25 @@ for word in words:
     labels.append(frame2label[word])
 plot_with_labels(low_dim_embs, words,labels)
 
-"""
-#code pour forcer les centres et lister tous les elements des clusters
-coordonneesCentres=np.asarray(coordinates2)
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
-print(kmeans.labels_)
-for i in range(len(clustersParMots)):
+print("Using GMM")
+kmeans = KMeans(n_clusters = 44,random_state =0).fit(coordinates)
+centroids = kmeans.cluster_centers_
+
+clf = GMM(n_components = 44, init_params= "wc")
+clf.means_= np.array(centroids)
+clf.fit(coordinates)
+#clusters = 
+tmp = 0
+
+clusters = [[] for i in range (44)]
+labels = clf.predict(coordinates)
+for i in range(len(labels)) :
+    tmp = labels[i]
+    clusters[tmp].append(words[i])
+ 
+#print(clusters)
+for i in range(len(clusters)):
     listeDesMots="cluster numero "+str(i)+" : "
-    for j in clustersParMots[i]:
+    for j in clusters[i]:
         listeDesMots=listeDesMots+j+" "
-    print(listeDesMots+"\n")
-#///////////////////////////////////////////////////////////////////////////////:
-""" 
-
-
-"""
-#code permettant de calculer l'inertie totale et moyenne en fonction d'un nombre de clusters
-clustersParValeurs, kmeans=KMEANS(9)[0],KMEANS(9)[4]
-inertieTotale,inertieMoyenne,inertie=trouverInertie(300,clustersParValeurs,kmeans)
-print(inertieTotale)
-print(inertieMoyenne)
-#print(inertie)
-#inertie de 5854.46 pour 9 clusters
-"""
-
-
-"""
-#code permettant de tracer l'inertie totale en fonction du nombre de clusters
-n=40
-listeInertieTotale=[]
-listeInertieMoyenne=[]
-for i in range(1,n):
-    print(i)
-    clustersParValeurs, kmeans=KMEANS(i)[0],KMEANS(i)[4]
-    inertieTotale=kmeans.inertia_
-    listeInertieTotale.append(inertieTotale)
-print(listeInertieTotale)
-pl.plot([i for i in range(1, n)], listeInertieTotale)
-pl.show()
-#/////////////////////////////////////////////////////////////////////////////////////
-#point interessant à 9 clusters
-"""
-
-
-"""
-#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
-nombreDeClusters=9
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
-motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
-for i in range(len(motsLesPlusProches)):
-    dansUnCluster="cluster numero "+str(i)+" : "
-    for j in motsLesPlusProches[i]:
-        dansUnCluster=dansUnCluster+" | "+j
-    dansUnCluster=dansUnCluster+" |\n"
-    print(dansUnCluster)
-#///////////////////////////////////////////////////////////////////////////////////////////
-"""
-
-"""
-#code permettant de tracer la distance moyenne choisie en fonction du nombre de clusters
-n=561
-p=10
-listeDistanceMoyenne=comparaisonDistanceMoyenne(n)
-pl.plot([i for i in range(1, n+1)], listeDistanceMoyenne)
-pl.show()
-valeurEn10=listeDistanceMoyenne[9]
-coeff=valeurEn10/552
-valeurTheorique=[coeff*(562-i) for i in range(561)]
-ecart=[abs(valeurTheorique[i]-listeDistanceMoyenne[i]) for i in range(len(listeDistanceMoyenne))]
-elbow=trouverMax(ecart)
-print(ecart)
-print(elbow)
-#resultat : 316 clusters 
-#////////////////////////////////////////////////////////////////////////////////////////////"""
+    print(listeDesMots)
