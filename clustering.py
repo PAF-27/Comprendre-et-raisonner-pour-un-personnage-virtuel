@@ -8,13 +8,18 @@ Created on Fri Jun 16 11:34:06 2017
 import numpy as np 
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as pl
+from sklearn.manifold import TSNE
+import random
+from sklearn.decomposition import PCA
 
-
+tronque=301
 #permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dimensions
-f= open("C:\\Users\\cleme\git\\Comprendre-et-raisonner-pour-un-personnage-virtuel\\resultat.txt",'r',encoding='UTF8')
+f= open("C:\\Users\\cleme\\Desktop\\frames_et_image_schemas.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
+coordinatestronque=[]
+tmptronque=[]
 for line in f:
     t=line.split()
     for j in range (1, len(t)) :
@@ -26,8 +31,10 @@ for line in f:
         else :
             t[j]=float(string)
     words.append(t[0])
+    tmptronque=t[1:tronque]
     tmp=t[1:len(t)]
     coordinates.append(tmp)
+    coordinatestronque.append(tmptronque)
 f.close()
 #//////////////////////////////////////////////////////////////////////////////
 
@@ -37,6 +44,7 @@ f2= open("C:\\Users\\cleme\\Desktop\\image_schemas_a_utiliser_extraites_avec_pro
 words2=[]
 tmp=[]
 coordinates2=[]
+coordinatestronque2=[]
 for line in f2:
     t=line.split()
     for j in range (1, len(t)) :
@@ -49,10 +57,15 @@ for line in f2:
             t[j]=float(string)
     words2.append(t[0])
     tmp=t[1:len(t)]
+    tmptronque2=t[1:tronque]
     coordinates2.append(tmp)
+    coordinatestronque2.append(tmptronque2)
 f2.close()
 #////////////////////////////////////////////////////////////////////////////////////
 
+pca=PCA(n_components=300)
+pca=pca.fit(coordinates)
+print(pca.explained_variance_ratio_)
 
 #fonction de calcul de distance
 def distance(n, x, y):
@@ -103,9 +116,9 @@ def trouverDistanceEtCentre(n,clustersParValeurs,kmeans,clustersParMots):
     positionCentre=[0 for i in range(n)]
     distanceMoyenne=[0 for i in range(n)]
     for i in range(n):
-        minimum.append(distance(300, clustersParValeurs[i][0], kmeans.cluster_centers_[i]))
+        minimum.append(distance(tronque-1, clustersParValeurs[i][0], kmeans.cluster_centers_[i]))
         for j in range(len(clustersParValeurs[i])):
-            distanceTmp=distance(300,clustersParValeurs[i][j],kmeans.cluster_centers_[i])
+            distanceTmp=distance(tronque-1,clustersParValeurs[i][j],kmeans.cluster_centers_[i])
             if distanceTmp<minimum[i]:
                 positionCentre[i]=j
             distanceMoyenne[i]=distanceMoyenne[i]+distanceTmp
@@ -173,7 +186,7 @@ def trouverInertie(n,clustersParValeurs,kmeans):
 
 #permet de trouver les clusters avec un paramètre entier n 
 def KMEANS(n):
-    kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
+    kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinatestronque)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
     centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans,clustersParMots)
     return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
@@ -182,7 +195,7 @@ def KMEANS(n):
 
 #permet de trouver les clusters avec un paramètre entier n  et une liste de n centres pour l'initialisation
 def KMEANSInit(n, coordinatesCenters, coordinates):
-    kmeans = KMeans(n_clusters=n, init=coordinatesCenters,n_init=1).fit(coordinates)
+    kmeans = KMeans(n_clusters=n, init=coordinatesCenters,n_init=1,max_iter=300).fit(coordinates)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
     centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans,clustersParMots)
     return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
@@ -306,11 +319,11 @@ def motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans):
         mots.append(motsLesPlusProchesUnCluster(clustersParValeurs[i],clustersParMots[i],10,kmeans.cluster_centers_[i]))
     return mots
 #////////////////////////////////////////////////////////////////////////////////////////
-
-#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster en initialisant les clusters aux image schemas
-nombreDeClusters=101
-
 """
+#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster en initialisant les clusters aux image schemas
+nombreDeClusters=46
+
+
 coordonneesCentres=np.asarray(coordinates2)
 clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
 motsLesPlusProches=motsLesPlusProchesKMEANS(clustersParValeurs,clustersParMots,kmeans)
@@ -331,8 +344,9 @@ def lister(words,labels,i):
     return res
 #/////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 #code pour lister tous les elements des clusters
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(nombreDeClusters)
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(46)
 for i in range(len(clustersParMots)):
     listeDesMots="cluster numero "+str(i)+" : "
     for j in clustersParMots[i]:
@@ -341,11 +355,10 @@ for i in range(len(clustersParMots)):
 #//////////////////////////////////////////////////////////////////////////////////
 
 
-
 """
 #code pour forcer les centres et lister tous les elements des clusters
-coordonneesCentres=np.asarray(coordinates2)
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(nombreDeClusters, coordonneesCentres, coordinates)
+coordonneesCentres=np.asarray(coordinatestronque2)
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(46, coordonneesCentres, coordinatestronque)
 print(kmeans.labels_)
 for i in range(len(clustersParMots)):
     listeDesMots="cluster "+ words2[i]+ " : "
@@ -354,38 +367,28 @@ for i in range(len(clustersParMots)):
     print(listeDesMots)
 print(kmeans.inertia_)
 #inertie comparable a 36 clusters sans forcer les centres
-#///////////////////////////////////////////////////////////////////////////////:
+#//////////////////////////////////////////////////////////////////////////////:
 """
-
 
 """
 #code permettant de calculer l'inertie totale et moyenne en fonction d'un nombre de clusters
 clustersParValeurs, kmeans=KMEANS(9)[0],KMEANS(9)[4]
-inertieTotale,inertieMoyenne,inertie=trouverInertie(300,clustersParValeurs,kmeans)
+inertieTotale,inertieMoyenne,inertie=trouverInertie(100,clustersParValeurs,kmeans)
 print(inertieTotale)
 print(inertieMoyenne)
 #print(inertie)
 #inertie de 5854.46 pour 9 clusters
 """
-
-
 """
 #code permettant de tracer l'inertie totale en fonction du nombre de clusters avec l'inertie de sklearn.kmeans
-n=561
+n=100
 listeInertieTotale=[]
 for i in range(1,n):
-    clustersParValeurs, kmeans=KMEANS(i)[0],KMEANS(i)[4]
+    kmeans=KMeans(i).fit(coordinates100)
     listeInertieTotale.append(kmeans.inertia_)
 print(listeInertieTotale)
 pl.plot([i for i in range(1, n)], listeInertieTotale)
 pl.show()
-valeurEn1=listeInertieTotale[0]
-coeff=valeurEn1/561
-valeurTheorique=[coeff*(562-i) for i in range(561)]
-ecart=[abs(valeurTheorique[i]-listeInertieTotale[i]) for i in range(len(listeInertieTotale))]
-elbow=trouverMax(ecart)
-print(ecart)
-print(elbow)
 #/////////////////////////////////////////////////////////////////////////////////////
 #point interessant à 9 clusters
 #elbow point a 175 clusters
@@ -438,3 +441,42 @@ print(ecart)
 print(elbow)
 #resultat : 316 clusters 
 #////////////////////////////////////////////////////////////////////////////////////////////"""
+
+
+def plot_with_labels(low_dim_embs, words,labels, filename='tsne.png'):
+    label_set = set(labels)
+    color_map = {}
+    r = lambda: random.randint(0,255)
+    for label in label_set:
+        random_color = format('#%02X%02X%02X' % (r(),r(),r()))
+        color_map[label] = random_color
+    
+    assert low_dim_embs.shape[0] >= len(words), 'More words than embeddings'
+    pl.figure(figsize=(18, 18))  # in inches
+    for i, label in enumerate(words):
+        x, y = low_dim_embs[i, :]
+        pl.scatter(x, y,color = color_map[labels[i]])
+        pl.annotate(label,
+        xy=(x, y),
+        xytext=(5, 2),
+        textcoords='offset points',
+        ha='right',
+        va='bottom')
+
+    pl.savefig(filename)
+
+def getframe2label(clustersParMots):
+    frame2label = {}
+    for cluster in clustersParMots:
+        for frame in cluster:
+            frame2label[frame] = clustersParMots.index(cluster)
+    return frame2label
+
+dic = getframe2label(clustersParMots)
+labels = []
+for word in words:
+    labels.append(dic[word])
+# visualization
+tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=5000)
+low_dim_embs = tsne.fit_transform(coordinates[:])
+plot_with_labels(low_dim_embs,words, labels )
