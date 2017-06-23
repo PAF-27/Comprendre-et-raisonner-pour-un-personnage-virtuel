@@ -120,22 +120,25 @@ for line in f_centroids:
     centroids_words.append(t[0])
     tmp2=t[1:len(t)]
     centroids_coordinates.append(tmp2)    
-#print(centroids_words)    
 
-kmeans = KMeans(n_clusters = 101,random_state =0).fit(coordinates)
+all_coordinates = coordinates + centroids_coordinates
+all_words = words + centroids_words 
+print(all_words)
+
+kmeans = KMeans(n_clusters = 44,random_state =0).fit(all_coordinates)
 centroids = kmeans.cluster_centers_
 
-clf = GMM(n_components = 101, init_params= "wc")
+clf = GMM(n_components = 44, init_params= "wc")
 clf.means_= np.array(centroids)
 clf.fit(coordinates)
 #clusters = 
 tmp = 0
 
-clusters = [[] for i in range (101)]
+clusters = [[] for i in range (44)]
 labels = clf.predict(coordinates)
 for i in range(len(labels)) :
     tmp = labels[i]
-    clusters[tmp].append(words[i])
+    clusters[tmp].append(all_words[i])
  
 #print(clusters)
 for i in range(len(clusters)):
@@ -143,6 +146,7 @@ for i in range(len(clusters)):
     for j in clusters[i]:
         listeDesMots=listeDesMots+j+" "
     print(listeDesMots)
+    
 
 """for c in range(27):
     print(words[coordinates.index(clf.means_[c].tolist())])
