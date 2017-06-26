@@ -35,7 +35,7 @@ for line in f:
     coordinates.append(tmp)
     
 #extraction des coordonnées des centroids pour l'initialisation  
-f_centroids = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/image_schemas_a_utiliser_extraites.txt",'r',encoding='UTF8')
+f_centroids = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/image_schemas_a_utiliser_extraites_avec_process_et_bounded.txt",'r',encoding='UTF8')
 i = 0
 centroids_coordinates = []
 centroids_words = []
@@ -125,17 +125,17 @@ all_coordinates = coordinates + centroids_coordinates
 all_words = words + centroids_words 
 print(all_words)
 
-kmeans = KMeans(n_clusters = 44,random_state =0).fit(all_coordinates)
+kmeans = KMeans(n_clusters = 18,random_state =0).fit(all_coordinates)
 centroids = kmeans.cluster_centers_
 
-clf = GMM(n_components = 44, init_params= "wc")
+clf = GMM(n_components = 18, init_params= "wc")
 clf.means_= np.array(centroids)
-clf.fit(coordinates)
+clf.fit(all_coordinates)
 #clusters = 
 tmp = 0
 
-clusters = [[] for i in range (44)]
-labels = clf.predict(coordinates)
+clusters = [[] for i in range (18)]
+labels = clf.predict(all_coordinates)
 for i in range(len(labels)) :
     tmp = labels[i]
     clusters[tmp].append(all_words[i])
@@ -147,7 +147,14 @@ for i in range(len(clusters)):
         listeDesMots=listeDesMots+j+" "
     print(listeDesMots)
     
+#detection de la présence d'images schémas dans chaque cluster 
 
+for i in range (len(clusters)):
+    for j in range(len(clusters[i])):
+        for p in range(len(centroids_words)) :
+            if clusters[i][j] == centroids_words[p]:
+                print("cluster n°" + str(i) + " contient " + centroids_words[p])
+                
 """for c in range(27):
     print(words[coordinates.index(clf.means_[c].tolist())])
 
