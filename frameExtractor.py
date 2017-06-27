@@ -5,9 +5,9 @@ Created on Mon Jun 19 17:25:09 2017
 @author: zainabhabas
 """
 
-fdata = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/numberbatch-en-17.04b.txt", "r",encoding='UTF8')
-fframes = open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/ListedesFrames.txt", "r",encoding='UTF8')
-fresultat=open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/resultat.txt",'w',encoding='UTF8')
+fdata = open("/home/erwan/Documents/PAF/GloVe/glove.840B.300d.txt", "r",encoding='UTF8')
+fframes = open("/home/erwan/Documents/PAF/Clustering/liste_des_frames.txt", "r",encoding='UTF8')
+fresultat=open("/home/erwan/Documents/PAF/Clustering/resultat.txt",'w',encoding='UTF8')
 
 compteurFrames=0
 compteurMots=0
@@ -26,7 +26,7 @@ for line in fdata:
     tartiflette=frame.split()
     frame=tartiflette[0]
     
-    while (frame!="worry"):
+    while (frame!=""):
         
         if frame==mot:
             
@@ -42,21 +42,23 @@ for line in fdata:
                 
             fresultat.write("\n")
             frame=fframes.readline()
-            frame=str(frame)
-            frame=frame.lower()
-            tartiflette=frame.split()
-            frame=tartiflette[0]
+            if frame != "":
+                frame=str(frame)
+                frame=frame.lower()
+                tartiflette=frame.split()
+                frame=tartiflette[0]
             
         else :
             
             frame=fframes.readline()
-            frame=str(frame)
-            frame=frame.lower()
-            tartiflette=frame.split()
-            frame=tartiflette[0]
+            if frame != "":
+                frame=str(frame)
+                frame=frame.lower()
+                tartiflette=frame.split()
+                frame=tartiflette[0]
         #print(mot+" "+frame)
    
     fframes.close()
-    fframes=open("/Users/zainabhabas/Documents/workspace/Comprendre-et-raisonner-pour-un-personnage-virtuel/ListedesFrames.txt", "r",encoding='UTF8')
+    fframes=open("/home/erwan/Documents/PAF/Clustering/liste_des_frames.txt", "r",encoding='UTF8')
 fresultat.close()
     

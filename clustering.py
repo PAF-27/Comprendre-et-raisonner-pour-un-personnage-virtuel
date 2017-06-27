@@ -7,12 +7,13 @@ Created on Fri Jun 16 11:34:06 2017
 
 import numpy as np 
 from sklearn.cluster import KMeans
-import matplotlib.pyplot as pl
+from sklearn.cluster import MeanShift
+import matplotlib.pyplot as plt
 
     
     
 #permet de décoder le fichier texte contenant la projection des frames sur un espace en 300 dismension
-f= open("C:\\Users\\cleme\git\\Comprendre-et-raisonner-pour-un-personnage-virtuel\\resultat.txt",'r',encoding='UTF8')
+f= open("/home/erwan/Documents/PAF/Clustering/frame-raisonnable.txt",'r',encoding='UTF8')
 words=[]
 tmp=[]
 coordinates=[]
@@ -22,7 +23,7 @@ i=0
 for line in f:
     t=line.split()
     i=i+1
-    print(i)
+    #print(i)
     for j in range (1, len(t)) :
         string=t[j]
         if string.startswith('-'):
@@ -143,7 +144,7 @@ def KMEANS(n):
     kmeans = KMeans(n_clusters=n, random_state=0).fit(coordinates)
     clustersParValeurs,clustersParMots=trouverCluster(n,kmeans)
     centreString,distanceMoyenne=trouverDistanceEtCentre(n,clustersParValeurs,kmeans)
-    return clustersParValeurs,clustersParMots,centreString,distanceMoyenne
+    return clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans
 #///////////////////////////////////////////////////////////////
 
 
@@ -211,13 +212,23 @@ def trouverMin(liste):
             indicemin=i
     return i
 
-n=561
-p=2
-pl.plot([i for i in range(1, n+1)], comparaisonDistanceMoyenneTchebychev(n))
-pl.show()
+#n=561
+#p=2
+#plt.plot([i for i in range(1, n+1)], comparaisonDistanceMoyenneTchebychev(n))
+#plt.show(
 
+#clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans = KMEANS(9)
+#print (kmeans.labels_)
+#inertia = []
+#for i in range (1,20) :        
+#    clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans = KMEANS(i)
+#    inertia.append(kmeans.inertia_)
+#plt.plot([i for i in range(1,20)], inertia)
+#plt.show()
 
-
-        
-
-
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANS(40)
+for i in range(len(clustersParMots)):
+    listeDesMots="cluster numero "+str(i)+" : "
+    for j in clustersParMots[i]:
+        listeDesMots=listeDesMots+j+" "
+    print(listeDesMots)
