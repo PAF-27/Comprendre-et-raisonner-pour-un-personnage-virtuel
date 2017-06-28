@@ -79,31 +79,33 @@ public class JDOM1 {
 			int n = imSchemaList.size();
 			Element imageschemas = new Element("imageschemas");
 			racine.addContent(imageschemas);
+			Element speech = new Element("speech");
+			racine.addContent(speech);
 			for (int i = 0; i<n;i++)
 			{
 				ArrayList<String> imSchema = imSchemaList.get(i);
 				String text = imSchema.get(0);
-				Element speech = new Element("speech");
-				racine.addContent(speech);
 				int m = imSchema.size();
 				int position = 0;
 				for (int j = 1;j<m;j = j+2)
 				{
-					Element tm = new Element("tm");
-					Element imageschema = new Element("imageschema");
-					speech.addContent(tm);
-					imageschemas.addContent(imageschema);
-					Attribute id = new Attribute("id","tm"+compteur);
-					Attribute ref = new Attribute("ref","tm"+compteur);
-					Attribute value = new Attribute("value",imSchema.get(j+1));
-					tm.setAttribute(id);
-					imageschema.setAttribute(ref);
-					imageschema.setAttribute(value);
-					String sentence = text.substring(position, Integer.parseInt(imSchema.get(j))+1);
-					position = Integer.parseInt(imSchema.get(j)) + 1;
-					tm.setText(sentence);
-					compteur = compteur + 1;
-					
+					if (imSchema.get(j+1).compareTo("nope") != 0)
+					{
+						Element tm = new Element("tm");
+						Element imageschema = new Element("imageschema");
+						speech.addContent(tm);
+						imageschemas.addContent(imageschema);
+						Attribute id = new Attribute("id","tm"+compteur);
+						Attribute ref = new Attribute("ref","tm"+compteur);
+						Attribute value = new Attribute("value",imSchema.get(j+1).toUpperCase());
+						tm.setAttribute(id);
+						imageschema.setAttribute(ref);
+						imageschema.setAttribute(value);
+						String sentence = text.substring(position, Integer.parseInt(imSchema.get(j))+1);
+						position = Integer.parseInt(imSchema.get(j)) + 1;
+						speech.addContent(sentence);
+						compteur = compteur + 1;
+					}
 				}
 				if (text.length() > position)
 				{
@@ -112,15 +114,15 @@ public class JDOM1 {
 					speech.addContent(tm);
 					Attribute id = new Attribute("id","tm"+compteur);
 					tm.setAttribute(id);
-					tm.setText(sentence);
+					speech.addContent(sentence);
 					compteur = compteur + 1;
 				}
-				Element tm = new Element("tm");
-				speech.addContent(tm);
-				Attribute id = new Attribute("id","tm"+compteur);
-				tm.setAttribute(id);
-				compteur = compteur + 1;
 			}
+			Element tm = new Element("tm");
+			speech.addContent(tm);
+			Attribute id = new Attribute("id","tm"+compteur);
+			tm.setAttribute(id);
+			compteur = compteur + 1;
 			try
 			   {
 			      //On utilise ici un affichage classique avec getPrettyFormat()
