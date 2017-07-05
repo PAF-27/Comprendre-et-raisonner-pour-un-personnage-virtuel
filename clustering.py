@@ -435,16 +435,7 @@ for i in range(len(clustersParMots)):
 """
 
 
-#code pour forcer les centres et lister tous les elements des clusters
-coordonneesCentres=np.asarray(coordinatestronque2)
-clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(46, coordonneesCentres, coordinatestronque)
-print(kmeans.labels_)
-for i in range(len(clustersParMots)):
-    listeDesMots="cluster "+ words2[i]+ " : "
-    for j in clustersParMots[i]:
-        listeDesMots=listeDesMots+j+" | "
-    print(listeDesMots)
-print(kmeans.inertia_)
+
 """
 #inertie comparable a 36 clusters sans forcer les centres
 #//////////////////////////////////////////////////////////////////////////////:
@@ -523,8 +514,18 @@ print(elbow)
 #resultat : 316 clusters 
 #////////////////////////////////////////////////////////////////////////////////////////////"""
 
-#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
+#code pour forcer les centres et lister tous les elements des clusters
+coordonneesCentres=np.asarray(coordinatestronque2)
+clustersParValeurs,clustersParMots,centreString,distanceMoyenne,kmeans=KMEANSInit(46, coordonneesCentres, coordinatestronque)
+print(kmeans.labels_)
+for i in range(len(clustersParMots)):
+    listeDesMots="cluster "+ words2[i]+ " : "
+    for j in clustersParMots[i]:
+        listeDesMots=listeDesMots+j+" | "
+    print(listeDesMots)
+print(kmeans.inertia_)
 
+#ce code permet d'avoir la liste des 10 mots les plus proches du centre pour chaque cluster
 
 def plot_with_labels(low_dim_embs, words,labels, filename='tsne.png'):
     label_set = set(labels)
@@ -565,4 +566,10 @@ tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=5000)
 low_dim_embs = tsne.fit_transform(coordinates[:])
 plot_with_labels(low_dim_embs,words, labels )
 
-#f_resultat = open("./frames_to_imageschémas.txt", 'a',encoding = 'UTF8')
+f_resultat = open("./frames_to_imageschemas.txt", 'a',encoding = 'UTF8')
+for i in range(len(words2)):
+    for j in range(len(clustersParMots[i])):
+        f_resultat.write("\n"+ clustersParMots[i][j]+ " "+ words2[i])
+f_resultat.close()
+    
+    
